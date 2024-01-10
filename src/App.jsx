@@ -2,18 +2,14 @@ import { useState } from 'react'
 import Login from './Login'
 import Dashboard from './Dashboard'
 import { Routes, Route } from 'react-router-dom'
-import axios from 'axios'
 
-// axios.defaults.baseURL = 'http://localhost:3000';
-// axios.defaults.withCredentials = true;
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [user, setUser] = useState('user')
   return (
     <Routes>
-      <Route path='/' element={<Login/>} />
-      <Route path='/dashboard' element={<Dashboard />} />
+      <Route path='/' element={<Login setUser={setUser}/>} />
+      <Route path='/dashboard' element={<Dashboard user={user}/>} />
     </Routes>
   )
 }

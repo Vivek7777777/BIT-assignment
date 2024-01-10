@@ -4,18 +4,13 @@ import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
 import axios from "axios";
 import { useState, useEffect } from "react";
-import PieChart from "./Piechart";
 import GraphBox from "./GraphBox";
 
 
-
-
-
-export default function Dashboard() {
+export default function Dashboard({user}) {
 
     const [minPrice, setMinPrice] = useState(1000),
         [maxPrice, setMaxPrice] = useState(0),
-        [totalPrice, setTotalPrice] = useState(0),
         [avgPrice, setAvgPrice] = useState(0),
         [aboveHun, setAboveHun] = useState(0),
         [aboveFif, setAboveFif] = useState(0),
@@ -23,23 +18,20 @@ export default function Dashboard() {
 
     const [minRating, setMinRating] = useState(5),
         [maxRating, setMaxRating] = useState(0),
-        [totalRating, setTotalRating] = useState(0),
         [avgRating, setAvgRating] = useState(0),
         [aboveFour, setAboveFour] = useState(0),
         [aboveThree, setAboveThree] = useState(0),
         [lessThree, setLessThree] = useState(0);
 
+    const isMobile = window.screen.width < 600
 
     async function getPrice() {
-        console.log("hiiii");
         try {
             const response = await axios.get('https://fakestoreapi.com/products')
             const result = response.data;
-            console.log(result);
             let aa = 1000, bb = 0, cc = 0, dd = 0, ee = 0, ff = 0, gg = 0;
             const promises = result.map(async (item) => {
                 let p = item.price;
-                console.log(p);
 
                 if (p < aa) {
                     aa = p
@@ -60,7 +52,6 @@ export default function Dashboard() {
             await Promise.all(promises);
             setMinPrice(aa);
             setMaxPrice(bb)
-            setTotalPrice(dd);
             setAvgPrice(dd / result.length);
             setAboveHun(ee);
             setAboveFif(ff);
@@ -73,15 +64,13 @@ export default function Dashboard() {
 
 
     async function getRating() {
-        console.log("hiiii");
         try {
             const response = await axios.get('https://fakestoreapi.com/products')
             const result = response.data;
-            console.log(result);
+
             let aa = 5, bb = 0, cc = 0, dd = 0, ee = 0, ff = 0, gg = 0;
             const promises = result.map(async (item) => {
                 let p = item.rating.rate;
-                console.log(p);
 
                 if (p < aa) {
                     aa = p
@@ -103,7 +92,6 @@ export default function Dashboard() {
             
             setMinRating(aa);
             setMaxRating(bb)
-            setTotalRating(dd);
             setAvgRating(dd / result.length);
             setAboveFour(ee);
             setAboveThree(ff);
@@ -124,21 +112,15 @@ export default function Dashboard() {
         getRating()
     }, [])
 
-    console.log(maxPrice);
 
     return (
         <>
-            <Navbar />
+            <Navbar user={user}/>
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={1}
-                    sx={{
-                        // height: '100v',
-                        border: '2px solid red'
-                    }}
-                >
-                    <Grid item xs={2}
+                <Grid container spacing={1}>
+                    <Grid item sm={3}  md={2} 
                         sx={{
-                            display: 'flex',
+                            display: isMobile ? 'none' : 'flex',
                             justifyContent: 'center',
                             bgcolor: 'yellow',
                         }}
@@ -156,7 +138,7 @@ export default function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={10}>
+                    <Grid item xs={12} sm={9} md={10}>
                         <Box
                             sx={{
                                 borderRadius: '20px',

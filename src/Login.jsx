@@ -10,7 +10,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 
-export default function SignUp() {
+export default function Login({ setUser }) {
+
+    function handleChange(e){
+        setUser(e.target.value);
+    }
 
     return (
         <Container component="main" maxWidth="xs"
@@ -38,11 +42,13 @@ export default function SignUp() {
                             <TextField
                                 autoComplete="given-name"
                                 name="firstName"
+                                // value='firstName'
                                 required
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
